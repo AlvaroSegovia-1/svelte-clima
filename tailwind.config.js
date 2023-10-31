@@ -1,9 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [],
-  theme: {
+  plugins: [],
+    theme: {
+      extend: {},
+    },
+  purge: ["./index.html",'./src/**/*.{svelte,js,ts}'], //for unused css
+  variants: {
     extend: {},
   },
-  plugins: [],
+  darkmode: false, // or 'media' or 'class'
 }
 
