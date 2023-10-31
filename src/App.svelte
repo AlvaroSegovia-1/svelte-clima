@@ -1,8 +1,13 @@
 <script lang="ts">
   import TailwindCss from "./lib/TailwindCSS.svelte";
+  import Weather from "./Components/Weather.svelte";
 </script>
 
-<main class="bg-slate-300">Hola Majos</main>
+<main class=" text-center">
+  <h2 class=" m-6 text-4xl">Weather App!</h2>
+  <hr />
+  <Weather />
+</main>
 
 <style>
 </style>
