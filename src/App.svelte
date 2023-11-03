@@ -4,8 +4,9 @@
 </script>
 
 <main class=" text-center">
-  <h2 class=" m-6 text-4xl">Weather App!</h2>
+  <h1 class=" m-6 text-4xl">Weather App!</h1>
   <hr />
+
   <Weather />
 </main>
 

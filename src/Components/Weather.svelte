@@ -40,6 +40,7 @@
 >
   <div class="flex flex-col justify-center">
     <div class="basis-1/3 m-6">
+      <h2 class="mt-2 mb-6 text-3xl">Enter your city</h2>
       <form on:submit|preventDefault={() => handleSubmit()}>
         <label>
           City: <input
@@ -52,18 +53,18 @@
           >Search</button
         >
       </form>
-    </div>
 
-    {#await promise}
-      <div class=" mt-5">
-        <Loading />
-      </div>
-    {:then weather}
-      <WeatherData {weather} />
-    {:catch error}
-      <div class=" mt-5">
-        <ErrorAlert {error} />
-      </div>
-    {/await}
+      {#await promise}
+        <div class="mt-5">
+          <Loading />
+        </div>
+      {:then weather}
+        <WeatherData {weather} />
+      {:catch error}
+        <div class="mt-5">
+          <ErrorAlert {error} />
+        </div>
+      {/await}
+    </div>
   </div>
 </div>
