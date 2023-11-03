@@ -1,68 +1,69 @@
 <script lang="ts">
+  import ErrorAlert from "./ErrorAlert.svelte";
+  import Loading from "./Loading.svelte";
+  import SearchForm from "./SearchForm.svelte";
+  import WeatherData from "./WeatherData.svelte";
+
   const APIKEY = "b5caee92e26468eb94536a52fb0bc0ad";
-  let city = "Mexico";
+  let city = "";
 
-  const getWeatherData = async () => {
-    const res = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=${APIKEY}`
-    );
+  const getWeatherData = async (city: string = "mexico") => {
+    const baseUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=${APIKEY}`;
 
-    /* const res_2 = await fetch(`
-    http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${APIKEY}`); */
+    if (city.trim() === "") {
+      throw new Error("Name invalid or empty");
+    }
+
+    const res = await fetch(baseUrl);
 
     const data = await res.json();
 
     console.log(data);
 
+    if (data.cod == "404") {
+      throw new Error("This name don´t exist");
+    }
+
     return data;
   };
 
   let promise = getWeatherData();
+
+  const handleSubmit = () => {
+    promise = getWeatherData(city);
+    city = "";
+  };
 </script>
 
-<div class="container mx-auto mt-6">
-  <div class="flex">
-    {#await promise}
-      Loading ...
-    {:then weather}
-      <div class="w-1/2">
-        <div>
-          <img
-            class="bg-slate-300 inline-block"
-            src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-            alt={weather.name}
+<div
+  class="container mx-auto max-h-fit max-w-fit w-4/5 mt-8 pb-20 bg-slate-300 rounded-xl"
+>
+  <div class="flex flex-col justify-center">
+    <div class="basis-1/3 m-6">
+      <form on:submit|preventDefault={() => handleSubmit()}>
+        <label>
+          City: <input
+            bind:value={city}
+            type="text"
+            class=" px-2 py-1 bg-stone-300 border rounded border-black"
           />
-          <h1 class="inline-block">
-            {weather.main.temp}°C
-          </h1>
-        </div>
+        </label>
+        <button class="m-4 py-1 px-2 bg-stone-300 border rounded border-black"
+          >Search</button
+        >
+      </form>
+    </div>
 
-        <h4>
-          City: <span class="font-bold"
-            >{weather.name}, {weather.sys.country}</span
-          >
-        </h4>
-        <h4>
-          Weather: <span class="font-bold"
-            >{weather.weather[0].description}</span
-          >
-        </h4>
+    {#await promise}
+      <div class=" mt-5">
+        <Loading />
       </div>
-      <div class="w-1/2">
-        <h4>
-          Maximun Temperature: <span class="font-bold text-red-500"
-            >{weather.main.temp_max}</span
-          >
-        </h4>
-
-        <h4>
-          Minimun Temperature <span class="font-bold text-blue-500"
-            >{weather.main.temp_min}</span
-          >
-        </h4>
+    {:then weather}
+      <WeatherData {weather} />
+    {:catch error}
+      <div class=" mt-5">
+        <ErrorAlert {error} />
       </div>
     {/await}
   </div>
 </div>
-
-<!-- Apikey ed4e29db589e14003cd85cd8ee0a80fa -->
