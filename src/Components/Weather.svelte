@@ -4,9 +4,7 @@
   import SearchForm from "./SearchForm.svelte";
   import WeatherData from "./WeatherData.svelte";
 
-  //const APIKEY = import.meta.env.VITE_APIKEY;
-
-  const APIKEY = "b5caee92e26468eb94536a52fb0bc0ad";
+  const APIKEY = import.meta.env.VITE_APIKEY;
 
   let city = "";
 
